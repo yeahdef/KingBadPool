@@ -1,4 +1,4 @@
-
+import "CoreLibs/timer"
 import 'asteroid'
 import 'player'
 
@@ -10,9 +10,11 @@ end
 
 local aspeed = 3
 local acount = 5
+t = playdate.timer.new(1000)
+t.repeats = true
 
 function setup()
-	for i = 1,10 do
+	for i = 1,3 do
 		a = Asteroid:new()
 		
 		local x,y,dx,dy
@@ -30,7 +32,7 @@ end
 
 player = Player:new()
 player:moveTo(395, 120)
-player:setScale(5)
+player:setScale(3)
 player:setFillPattern({0xf0, 0xf0, 0xf0, 0xf0, 0x0f, 0x0f, 0x0f, 0x0f})
 player:setStrokeColor(gfx.kColorWhite)
 player.wraps = 1
@@ -46,19 +48,19 @@ gfx.setColor(gfx.kColorWhite)
 
 function playdate.update()
 	gfx.sprite.update()
+    local time = 1000
+    if time > t.currentTime
+    then
+    	player:shoot()
+		time = t.currentTime
+	end
+	playdate.timer.updateTimers()
 end
-
-local turn = 0
-
--- function playdate.leftButtonDown()	turn -= 1; player:turn(turn)	end
--- function playdate.leftButtonUp()	turn += 1; player:turn(turn)	end
--- function playdate.rightButtonDown()	turn += 1; player:turn(turn)	end
--- function playdate.rightButtonUp()	turn -= 1; player:turn(turn)	end
 
 function playdate.downButtonDown()	player:startThrustLeft()	end
 function playdate.downButtonUp()	player:stopThrustLeft()		end
 function playdate.upButtonDown()	player:startThrustRight()	end
-function playdate.upButtonUp()	player:stopThrustRight()	end
-function playdate.BButtonDown()		player:shoot()	end
+function playdate.upButtonUp()		player:stopThrustRight()	end
+-- function playdate.BButtonDown()		player:shoot()	end
 
 function levelCleared() setup() end

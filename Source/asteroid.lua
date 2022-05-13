@@ -11,7 +11,7 @@ local geom = playdate.geometry
 function Asteroid:new()
 	local self = VectorSprite:new({5,0, 0,5, -5,0, 0,-5, 5,0})
 	self.type = "asteroid"
-	self.wraps = false
+	self.wraps = true
 
 	asteroidCount += 1
 

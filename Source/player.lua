@@ -7,23 +7,12 @@ Player.__index = Player
 
 local bulletspeed = 16
 local maxspeed = 12
-local turnspeed = 8
 local thrustspeed = 0.6
 local maxLeftPos = 240
 local maxRightPos = 0
 
 function Player:new()
 	local self = VectorSprite:new({4,0, -4,3, -2,0, -4,-3, 4,0})
-
-	self.thrust = { VectorSprite:new({-4, 3, -6,0, -4,-3}),
-					VectorSprite:new({-4, 3, -9,0, -4,-3}) }
-
-	self.thrust[1]:addSprite()
-	self.thrust[2]:addSprite()
-
-	self.thrust[1]:setVisible(false)
-	self.thrust[2]:setVisible(false)
-	self.thrustframe = 1
 
 	self.da = 0
 	self.dx = 0
@@ -32,15 +21,12 @@ function Player:new()
 	self.thrustingLeft = 0
 	self.thrustingRight = 0
 	self.wraps = false
-	
+	self.type = "player"
+
 	function self:collide(s)
 		print(s)
 	end
 	
-	function self:turn(d)
-		self.da = turnspeed * d
-	end
-
 	function self:hit(asteroid)
 		print("hit!")
 	end
@@ -59,21 +45,11 @@ function Player:new()
 	end
 	
 	function self:update()
+		self.angle = playdate.getCrankPosition() - 90
 		self:updatePosition()
 
 		if self.thrustingLeft == 1 
 		then
-			self.thrust[self.thrustframe]:setVisible(false)
-			self.thrustframe = 3 - self.thrustframe
-
-			local t = self.thrust[self.thrustframe]
-
-			t:setVisible(true)
-			t.angle = 90
-			t:setScale(self.xscale, self.yscale)
-			t:moveTo(self.x, self.y)
-			t:updatePosition()
-
 			local dy = self.dy + thrustspeed * math.sin(math.rad(90))
 			local m = hypot(0, dy)
 			
@@ -86,17 +62,6 @@ function Player:new()
 
 		if self.thrustingRight == 1 
 		then
-			self.thrust[self.thrustframe]:setVisible(false)
-			self.thrustframe = 3 - self.thrustframe
-
-			local t = self.thrust[self.thrustframe]
-
-			t:setVisible(true)
-			t.angle = 270
-			t:setScale(self.xscale, self.yscale)
-			t:moveTo(self.x, self.y)
-			t:updatePosition()
-
 			local dy = self.dy + thrustspeed * math.sin(math.rad(270))
 			local m = hypot(0, dy)
 			
@@ -109,22 +74,18 @@ function Player:new()
 	end
 	
 	function self:startThrustLeft()
-		self.thrust[self.thrustframe]:setVisible(true)
 		self.thrustingLeft = 1
 	end
 
 	function self:stopThrustLeft()
-		self.thrust[self.thrustframe]:setVisible(false)
 		self.thrustingLeft = 0
 	end
 
 	function self:startThrustRight()
-		self.thrust[self.thrustframe]:setVisible(true)
 		self.thrustingRight = 1
 	end
 
 	function self:stopThrustRight()
-		self.thrust[self.thrustframe]:setVisible(false)
 		self.thrustingRight = 0
 	end
 

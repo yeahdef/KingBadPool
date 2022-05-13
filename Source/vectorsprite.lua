@@ -58,14 +58,15 @@ function VectorSprite:new(verts)
 		self:updateBounds()
 	end
 
-	function self:setVelocity(dy, da)
+	function self:setVelocity(dx, dy, da)
+		self.dx = dx
 		self.dy = dy
 		
 		if da then self.da = da end
 	end
 
 	function self:updatePosition()
-		if self.da ~= 0 then
+		if self.da ~= 0 and self.type == "asteroid" then
 			self.angle = self.angle + (self.da or 0)
 		end
 
