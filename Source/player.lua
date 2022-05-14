@@ -22,6 +22,7 @@ function Player:new()
 	self.thrustingRight = 0
 	self.wraps = false
 	self.type = "player"
+	self.health = 100
 
 	function self:collide(s)
 		print(s)
@@ -29,6 +30,7 @@ function Player:new()
 	
 	function self:hit(asteroid)
 		print("hit!")
+		self.health -= 10
 	end
 
 	function self.collision(other)

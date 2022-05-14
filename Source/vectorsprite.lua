@@ -59,9 +59,8 @@ function VectorSprite:new(verts)
 	end
 
 	function self:setVelocity(dx, dy, da)
-		self.dx = dx
-		self.dy = dy
-		
+		if dx then self.dx = dx end
+		if dy then self.dy = dy end
 		if da then self.da = da end
 	end
 

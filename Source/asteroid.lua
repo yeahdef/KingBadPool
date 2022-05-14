@@ -5,6 +5,8 @@ Asteroid = {}
 Asteroid.__index = Asteroid
 
 asteroidCount = 0
+numDestroyed = 0
+userScore = 0
 
 local geom = playdate.geometry
 
@@ -12,6 +14,7 @@ function Asteroid:new()
 	local self = VectorSprite:new({5,0, 0,5, -5,0, 0,-5, 5,0})
 	self.type = "asteroid"
 	self.wraps = true
+	self.pointValue = 3
 
 	asteroidCount += 1
 
@@ -43,6 +46,7 @@ function Asteroid:new()
 			self:setVelocity(dx, dy, self.da + math.random(100) / 200.0 - 0.25)
 
 			local a = Asteroid:new()
+			a.pointValue = 1
 			a.angle = self.angle
 			a:setVelocity(dx + 2 * math.random() - 1, dy + 2 * math.random() - 1, self.da + math.random(100) / 200.0 - 0.25)
 			a:moveTo(self.x, self.y)
@@ -55,15 +59,19 @@ function Asteroid:new()
 			a:moveTo(self.x, self.y)
 			a:setLevel(self.size)
 			a:addSprite()
-
+			numDestroyed += 1
+			userScore = userScore + self.pointValue
 		else
 			self:remove()
 			asteroidCount -= 1
+			numDestroyed += 1
+			userScore = userScore + self.pointValue
 
 			if asteroidCount == 0 then
 				levelCleared()
 			end
 		end
+	print(userScore)
 	end
 
 	return self
